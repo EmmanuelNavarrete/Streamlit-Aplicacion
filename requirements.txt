@@ -1,7 +1,6 @@
 numpy==1.21.4
 streamlit-option-menu==0.3.2
 scikit-learn==1.1.1
-protobuf==3.20.1
 sentencepiece==0.1.99
 transformers==4.26.1
 tensorflow==2.11.0
