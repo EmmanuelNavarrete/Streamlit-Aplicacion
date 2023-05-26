@@ -60,27 +60,27 @@ RESULT_TEMP = """
 box-shadow:0 0 15px 5px #ccc; background-color: #a8f0c6;
   border-left: 5px solid #6c6c6c;">
 <h4>{}</h4>
-<p style="color:blue;"><span style="color:black;">📈Score::</span>{}</p>
-<p style="color:blue;"><span style="color:black;">🔗</span><a href="{}",target="_blank">Link</a></p>
-<p style="color:blue;"><span style="color:black;">🔗</span><a href="{}",target="_blank">Link_2</a></p>
-<p style="color:blue;"><span style="color:black;">🔗</span><a href="{}",target="_blank">Link_Descripción</a></p>
-<p style="color:blue;"><span style="color:black;">🔗</span><a href="{}",target="_blank">Link_Título_2</a></p>
-<p style="color:blue;"><span style="color:black;">📆Fecha_Inicio:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📆Fecha_Fin:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">🌎Region:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📊Distribución_Demográfica:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📊Audiencia_Esperada_Menor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📊Audiencia_Esperada_Mayor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📊Impresiones_Esperadas_Menor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📊Impresiones_Esperadas_Mayor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📃Página:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">📱Plataformas:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">💸Gasto_Menor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">💸Gasto_Mayor:</span>{}</p> 
-<p style="color:blue;"><span style="color:black;">📅Días_Publicación:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">⚡Polaridad:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">😃Sentimiento:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">🇪🇸 Traducción:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Score::</span>{}</p>
+<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link</a></p>
+<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link_2</a></p>
+<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link_Descripción</a></p>
+<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link_Título_2</a></p>
+<p style="color:blue;"><span style="color:black;">Fecha_Inicio:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Fecha_Fin:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Region:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Distribución_Demográfica:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Audiencia_Esperada_Menor:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Audiencia_Esperada_Mayor:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Impresiones_Esperadas_Menor:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Impresiones_Esperadas_Mayor:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Página:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Plataformas:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Gasto_Menor:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Gasto_Mayor:</span>{}</p> 
+<p style="color:blue;"><span style="color:black;">Días_Publicación:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Polaridad:</span>{}</p>
+<p style="color:blue;"><span style="color:black;">Sentimiento:</span>{}</p>
+<p style="color:blue;"><span style="color:black;"> Traducción:</span>{}</p>
 
 
 </div>
