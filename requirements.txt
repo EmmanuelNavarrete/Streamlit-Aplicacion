@@ -10,3 +10,5 @@ streamlit==1.18.0
 Pillow==9.2.0
 pipwin==0.5.2
 torch
+torchvision
+torchaudio
