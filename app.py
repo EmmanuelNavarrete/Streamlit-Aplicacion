@@ -2,10 +2,6 @@
 import streamlit as st 
 import streamlit.components.v1 as stc 
 
-from PIL import Image
-import torch
-from transformers import pipeline
-device = "cuda:1" if torch.cuda.is_available() else "cpu"
 
 # Load EDA
 import pandas as pd 
@@ -16,25 +12,6 @@ def load_data(data):
 	df = pd.read_csv(data)
 	return df 
 
-@st.cache_resource 
-def model_generator():
-    generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M', device=0)
-    return generator
-
-@st.cache_resource
-def model_translator_en_es():
-    translator = pipeline("translation", model="Helsinki-NLP/opus-mt-en-es")
-    return translator
-
-@st.cache_resource 
-def model_translator_es_en():
-    translator = pipeline("translation", model="Helsinki-NLP/opus-mt-es-en")
-    return translator
-
-@st.cache_resource
-def model_sentiment():
-    classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
-    return classifier
 
 # Fxn
 # Vectorize + Cosine Similarity Matrix
@@ -190,29 +167,7 @@ def main():
 	elif choice == "GPT-3":
      
 		st.subheader("GPT-3")
-		generator = model_generator()
-		translator_en_es = model_translator_en_es()
-		translator_es_en = model_translator_es_en()
-		sentiment = model_sentiment()
-
-
-		prompt_es = st.text_area('Texto a Generar', 'Insertar texto aqui')
-		prompt_en = translator_es_en(prompt_es)
-
-
-		# Generar texto con el prompt en ingles
-		results = generator(prompt_en[0]['translation_text'], do_sample=True, max_length=70, temperature=1.2)
-		gen_text_en = results[0]['generated_text']
-
-
-		# Traducir el texto generado a español
-		gen_text_es = translator_en_es(gen_text_en)
-		st.write('Texto generado:', gen_text_es[0]['translation_text'])
-
-		# Aplicar Sentiment Analysis a el texto generado en ingles
-		sentiment_en = sentiment(gen_text_en)
-		st.write(sentiment_en)
-
+		
 
 
 				# How To Maximize Your Profits Options Trading
