@@ -95,7 +95,7 @@ def search_term_if_not_found(term,df):
 
 def main():
 
-	st.title("Recomendacion")
+	st.title("Recomendación")
 
 	menu = ["Home","Recommend","GPT-3","About",]
 	choice = st.sidebar.selectbox("Menu",menu)
