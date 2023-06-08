@@ -100,7 +100,7 @@ def main():
 	menu = ["Home","Recommend","GPT-3","About",]
 	choice = st.sidebar.selectbox("Menu",menu)
 
-	df = load_data("data/archivo_excel_traducido.csv")
+	df = load_data("data/ADS.csv")
 
 	if choice == "Home":
 		st.subheader("Home")
