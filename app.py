@@ -152,7 +152,7 @@ def main():
 	else:
 		st.subheader("Sobre esta aplicación")
 		st.text("Esta aplicación cumple con funciones de recomendación de copys de redes sociales")
-
+		st.text("Eesta aplicación fue creada por Emmanuel López Navarrete")
 
 if __name__ == '__main__':
 	main()
