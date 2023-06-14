@@ -2,7 +2,7 @@
 import streamlit as st 
 import streamlit.components.v1 as stc 
 import streamlit as st
-# from PIL import Image
+from PIL import Image
 # import torch
 # from transformers import pipeline
 # device = "cuda:1" if torch.cuda.is_available() else "cpu"
@@ -97,7 +97,7 @@ def main():
 	menu = ["Home","Recommend","Analisis de sentimientos","About",]
  
 	
-	logo = st.Image.open("img\osbe.png")
+	logo = Image.open('logo.png')
 	
 	st.sidebar.image(logo, width=300)
 	with st.sidebar.header("Menu"):
