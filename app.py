@@ -94,7 +94,7 @@ def search_term_if_not_found(term,df):
 def main():
 
 	st.title("Aplicación de copys de redes sociales")
-	menu = ["Home","Recommend","Analisis de sentimientos","About",]
+	menu = ["Home","Recomendador","Analisis de sentimientos","About",]
  
 	
 	logo = Image.open('img/osbe.png')
@@ -118,7 +118,7 @@ def main():
 		cosine_sim_mat = vectorize_text_to_cosine_mat(df['ad_creative_body'])
 		search_term = st.text_input("Search")
 		num_of_rec = st.sidebar.number_input("Numero de resultados",5,30,7)
-		if st.button("Recommend"):
+		if st.button("Buscar"):
 			if search_term is not None:
 				try:
 					results = get_recommendation(search_term,cosine_sim_mat,df,num_of_rec)
