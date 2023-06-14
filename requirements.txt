@@ -2,6 +2,3 @@ numpy==1.21.4
 scikit-learn==1.1.1
 streamlit==1.18.0
 Pillow==9.2.0
-transformers==3.1.0
-
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu

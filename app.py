@@ -2,10 +2,10 @@
 import streamlit as st 
 import streamlit.components.v1 as stc 
 import streamlit as st
-from PIL import Image
-import torch
-from transformers import pipeline
-device = "cuda:1" if torch.cuda.is_available() else "cpu"
+# from PIL import Image
+# import torch
+# from transformers import pipeline
+# device = "cuda:1" if torch.cuda.is_available() else "cpu"
 
 # Load EDA
 import pandas as pd 
@@ -18,20 +18,20 @@ def load_data(data):
 	df = pd.read_csv(data)
 	return df 
 
-@st.cache_resource
-def model_translator_en_es():
-    translator = pipeline("translation", model="Helsinki-NLP/opus-mt-en-es")
-    return translator
+# @st.cache_resource
+# def model_translator_en_es():
+#     translator = pipeline("translation", model="Helsinki-NLP/opus-mt-en-es")
+#     return translator
 
-@st.cache_resource 
-def model_translator_es_en():
-    translator = pipeline("translation", model="Helsinki-NLP/opus-mt-es-en")
-    return translator
+# @st.cache_resource 
+# def model_translator_es_en():
+#     translator = pipeline("translation", model="Helsinki-NLP/opus-mt-es-en")
+#     return translator
 
-@st.cache_resource
-def model_sentiment():
-    classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
-    return classifier
+# @st.cache_resource
+# def model_sentiment():
+#     classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+#     return classifier
 
 # Fxn
 # Vectorize + Cosine Similarity Matrix
@@ -97,7 +97,7 @@ def main():
 	menu = ["Home","Recommend","Analisis de sentimientos","About",]
  
 	
-	logo = Image.open("..\src\img\osbe.png")
+	logo = st.image.open("\img\osbe.png")
 	
 	st.sidebar.image(logo, width=300)
 	with st.sidebar.header("Menu"):
@@ -147,13 +147,6 @@ def main():
 		
 		sentimiento = st.text_input("Inserta tu texto")
 
-		if st.button("Analizar"):
-			sentiment = model_translator_es_en()(sentimiento)	
-			st.write(sentiment)
-			sentiment = model_sentiment()(sentimiento)
-			st.write(sentiment)
-					
-  
 
 	else:
 		st.subheader("Sobre esta aplicación")
