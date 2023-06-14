@@ -100,6 +100,7 @@ def main():
 	logo = Image.open('img\osbe.png')
 	
 	st.sidebar.image(logo, width=300)
+ 
 	with st.sidebar.header("Menu"):
 		
 		choice = st.selectbox("Menu",menu)
