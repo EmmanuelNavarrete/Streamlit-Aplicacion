@@ -1,21 +1,22 @@
  # Core Pkg
 import streamlit as st 
 import streamlit.components.v1 as stc 
-
+import streamlit as st
+from PIL import Image
+import torch
+from transformers import pipeline
+device = "cuda:1" if torch.cuda.is_available() else "cpu"
 
 # Load EDA
 import pandas as pd 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity,linear_kernel
 
+
+# Load Our Dataset
 def load_data(data):
 	df = pd.read_csv(data)
 	return df 
-
-@st.cache_resource 
-def model_generator():
-    generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M', device=0)
-    return generator
 
 @st.cache_resource
 def model_translator_en_es():
@@ -32,7 +33,6 @@ def model_sentiment():
     classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
     return classifier
 
-
 # Fxn
 # Vectorize + Cosine Similarity Matrix
 
@@ -41,6 +41,7 @@ def vectorize_text_to_cosine_mat(data):
 	cv_mat = count_vect.fit_transform(data)
 	# Get the cosine
 	cosine_sim_mat = cosine_similarity(cv_mat)
+	st.write(cosine_sim_mat)
 	return cosine_sim_mat
 
 
@@ -48,90 +49,74 @@ def vectorize_text_to_cosine_mat(data):
 # Recommendation Sys
 @st.cache_resource
 def get_recommendation(title,cosine_sim_mat,df,num_of_rec=10):
-	# indices of the ad
-	ad_indices = pd.Series(df.index,index=df['text_column']).drop_duplicates()
-	# Index of ad
-	idx = ad_indices[title]
+	# indices of the course
+	course_indices = pd.Series(df.index,index=df['ad_creative_body']).drop_duplicates()
+	# Index of course
+	idx = course_indices[title]
+#En este código, hay un grafo representado por una matriz de similitud coseno con los enlaces o índices de los cursos dados en el DataFrame.
+# Esta matriz de similitud coseno se utiliza para calcular la similaridad entre los cursos y, en base a ello, recomendar la lista de top 10 mejores cursos relacionados. 
+# Los resultados se devuelven en una tabla con las columnas'ad_creative_body', 'similarity_score', 'page_name', 'diferencia' y 'sentimiento', y se enumeran según el puntaje de similitud.
 
 	# Look into the cosine matr for that index
 	sim_scores =list(enumerate(cosine_sim_mat[idx]))
 	sim_scores = sorted(sim_scores,key=lambda x: x[1],reverse=True)
-	selected_ad_indices = [i[0] for i in sim_scores[1:]]
-	selected_ad_scores = [i[0] for i in sim_scores[1:]]
+	selected_course_indices = [i[0] for i in sim_scores[1:]]
+	selected_course_scores = [i[0] for i in sim_scores[1:]]
 
 	# Get the dataframe & title
-	result_df = df.iloc[selected_ad_indices]
-	result_df['similarity_score'] = selected_ad_scores
-	final_recommended_ads = result_df[['text_column','similarity_score','ad_creative_link_titles','ad_creative_link_descriptions', 'ad_creative_link_titles_2','ad_delivery_start_time','ad_delivery_stop_time','delivery_by_region','demographic_distribution','estimated_audience_size_lower_bound','estimated_audience_size_upper_bound','impressions_lower_bound',
-				'impressions_upper_bound',
-				'page_name',
-				'publisher_platforms',
-				'spend_lower_bound',
-				'spend_upper_bound',
-				'days_publicated',
-				'polaridad',
-				'sentimiento',
-				'translated_column']]
-	return final_recommended_ads.head(num_of_rec)
+	result_df = df.iloc[selected_course_indices]
+	result_df['similarity_score'] = selected_course_scores
+	final_recommended_courses = result_df[['ad_creative_body','similarity_score','page_name','diferencia','sentimiento']]
+	return final_recommended_courses.head(num_of_rec)
 
 
 RESULT_TEMP = """
 <div style="width:90%;height:100%;margin:1px;padding:5px;position:relative;border-radius:5px;border-bottom-right-radius: 60px;
-box-shadow:0 0 15px 5px #ccc; background-color: #a8f0c6;
-  border-left: 5px solid #6c6c6c;">
-<h4>{}</h4>
-<p style="color:blue;"><span style="color:black;">Score::</span>{}</p>
-<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link</a></p>
-<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link_2</a></p>
-<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link_Descripción</a></p>
-<p style="color:blue;"><span style="color:black;"></span><a href="{}",target="_blank">Link_Título_2</a></p>
-<p style="color:blue;"><span style="color:black;">Fecha_Inicio:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Fecha_Fin:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Region:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Distribución_Demográfica:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Audiencia_Esperada_Menor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Audiencia_Esperada_Mayor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Impresiones_Esperadas_Menor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Impresiones_Esperadas_Mayor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Página:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Plataformas:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Gasto_Menor:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Gasto_Mayor:</span>{}</p> 
-<p style="color:blue;"><span style="color:black;">Días_Publicación:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Polaridad:</span>{}</p>
-<p style="color:blue;"><span style="color:black;">Sentimiento:</span>{}</p>
-<p style="color:blue;"><span style="color:black;"> Traducción:</span>{}</p>
+box-shadow:0 0 15px 5px #ccc; background-color: #530303;
+  border-left: 5px solid #670C0C;">
+<h4 style="color:white;">{}</h4>
+<p style="color:white;"><span style="color:#F39E70">📈 Score::</span>{}</p>
+<p style="color:white;"><span style="color:#F39E70;">🏆	Empresa: </span>{}</p>
+<p style="color:white;"><span style="color:#F39E70;">🌞	Días publicado: </span>{}</p>
+<p style="color:white;"><span style="color:#F39E70;">🌝 Sentimiento :</span>{}</p>
 
 
 </div>
 """
 
-# Search For Ad 
+# Search For Course 
 @st.cache_resource
 def search_term_if_not_found(term,df):
-	result_df = df[df['text_column'].str.contains(term)]
+	result_df = df[df['ad_creative_body'].str.contains(term)]
 	return result_df
 
 
 def main():
 
-	st.title("Recomendación")
+	st.title("Aplicación de copys de redes sociales")
+	menu = ["Home","Recommend","Analisis de sentimientos","About",]
+ 
+	
+	logo = Image.open("..\src\img\osbe.png")
+	
+	st.sidebar.image(logo, width=300)
+	with st.sidebar.header("Menu"):
+		
+		choice = st.selectbox("Menu",menu)
 
-	menu = ["Home","Recommend","GPT-3","About",]
-	choice = st.sidebar.selectbox("Menu",menu)
+	df = load_data("..\src\Data\sentimientos_Final.csv")
 
-	df = load_data("data/ADS.csv")
-
+        
 	if choice == "Home":
 		st.subheader("Home")
-		st.dataframe(df.head(10))
+		st.dataframe(df.sample(5))
 
 
 	elif choice == "Recommend":
-		st.subheader("Recommend Ads")
-		cosine_sim_mat = vectorize_text_to_cosine_mat(df['text_column'])
+		st.subheader("Recommend Courses")
+		cosine_sim_mat = vectorize_text_to_cosine_mat(df['ad_creative_body'])
 		search_term = st.text_input("Search")
-		num_of_rec = st.sidebar.number_input("Number",4,30,7)
+		num_of_rec = st.sidebar.number_input("Numero de resultados",5,30,7)
 		if st.button("Recommend"):
 			if search_term is not None:
 				try:
@@ -143,40 +128,13 @@ def main():
 					for row in results.iterrows():
 						rec_title = row[1][0]
 						rec_score = row[1][1]
-						rec_link = row[1][2]
-						rec_link_2 = row[1][3]
-						rec_link_description = row[1][4]
-						rec_link_title_2 = row[1][5]
-						rec_start_date = row[1][6]
-						rec_stop_date = row[1][7]
-						rec_region = row[1][8]
-						rec_demographic = row[1][9]
-						rec_lower_bound = row[1][10]
-						rec_upper_bound = row[1][11]
-						rec_impresions_lower_bound = row[1][12]
-						rec_impresions_upper_bound = row[1][13]
-						rec_page_name = row[1][14]
-						rec_publisher_platforms = row[1][15]
-						rec_spend_lower_bound = row[1][16]
-						rec_spend_upper_bound = row[1][17]
-						rec_days_publicated = row[1][18]
-						rec_polaridad = row[1][19]
-						rec_sentimiento = row[1][20]
-						rec_translated_column = row[1][21]
-						stc.html(RESULT_TEMP.format(rec_title,rec_score,rec_link,rec_link_2,rec_link_description,rec_link_title_2,rec_start_date,rec_stop_date,rec_region,rec_demographic,rec_lower_bound,
-									rec_upper_bound,
-									rec_impresions_lower_bound,
-									rec_impresions_upper_bound, 
-									rec_page_name,
-									rec_publisher_platforms,
-									rec_spend_lower_bound,
-									rec_spend_upper_bound,
-									rec_days_publicated,
-									rec_polaridad,
-									rec_sentimiento,
-									rec_translated_column
-
-								  ),height=350)
+						rec_page_name = row[1][2]
+						rec_diferencia = row[1][3]
+						rec_num_sub = row[1][4]
+						
+						
+						# st.write("Title",rec_title,)
+						stc.html(RESULT_TEMP.format(rec_title,rec_score,rec_page_name,rec_diferencia,rec_num_sub),height=350)
 				except:
 					results= "Not Found"
 					st.warning(results)
@@ -184,41 +142,25 @@ def main():
 					result_df = search_term_if_not_found(search_term,df)
 					st.dataframe(result_df)
 
-	elif choice == "GPT-3":
-     
-		st.subheader("GPT-3")
-		generator = model_generator()
-		translator_en_es = model_translator_en_es()
-		translator_es_en = model_translator_es_en()
-		sentiment = model_sentiment()
+	elif choice == "Analisis de sentimientos":
+		st.subheader("Analisis de sentimientos")
+		
+		sentimiento = st.text_input("Inserta tu texto")
 
-
-		prompt_es = st.text_area('Texto a Generar', 'Insertar texto aqui')
-		prompt_en = translator_es_en(prompt_es)
-
-
-		# Generar texto con el prompt en ingles
-		results = generator(prompt_en[0]['translation_text'], do_sample=True, max_length=70, temperature=1.2)
-		gen_text_en = results[0]['generated_text']
-
-
-		# Traducir el texto generado a español
-		gen_text_es = translator_en_es(gen_text_en)
-		st.write('Texto generado:', gen_text_es[0]['translation_text'])
-
-		# Aplicar Sentiment Analysis a el texto generado en ingles
-		sentiment_en = sentiment(gen_text_en)
-		st.write(sentiment_en)
-
-
-
-
-				# How To Maximize Your Profits Options Trading
+		if st.button("Analizar"):
+			sentiment = model_translator_es_en()(sentimiento)	
+			st.write(sentiment)
+			sentiment = model_sentiment()(sentimiento)
+			st.write(sentiment)
+					
+  
 
 	else:
-		st.subheader("About")
-		st.text("Built with Streamlit & Pandas")
+		st.subheader("Sobre esta aplicación")
+		st.text("Esta aplicación cumple con funciones de recomendación de copys de redes sociales")
 
 
 if __name__ == '__main__':
 	main()
+
+
