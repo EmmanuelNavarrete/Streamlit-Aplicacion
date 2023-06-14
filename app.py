@@ -97,7 +97,7 @@ def main():
 	menu = ["Home","Recommend","Analisis de sentimientos","About",]
  
 	
-	logo = st.image.open("img\osbe.png")
+	logo = st.image.open("img/osbe.png")
 	
 	st.sidebar.image(logo, width=300)
 	with st.sidebar.header("Menu"):
