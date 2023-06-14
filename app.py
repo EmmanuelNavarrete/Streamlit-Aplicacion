@@ -94,7 +94,7 @@ def search_term_if_not_found(term,df):
 def main():
 
 	st.title("Aplicación de copys de redes sociales")
-	menu = ["Home","Recomendador","Analisis de sentimientos","About",]
+	menu = ["Inicio","Recomendador","Analisis de sentimientos","About",]
  
 	
 	logo = Image.open('img/osbe.png')
@@ -108,8 +108,8 @@ def main():
 	df = load_data("data/sentimientos_Final.csv")
 
         
-	if choice == "Home":
-		st.subheader("Home")
+	if choice == "Inicio":
+		st.subheader("Inicio")
 		st.dataframe(df.sample(5))
 
 
