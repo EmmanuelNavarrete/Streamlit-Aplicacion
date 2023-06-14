@@ -113,8 +113,8 @@ def main():
 		st.dataframe(df.sample(5))
 
 
-	elif choice == "Recommend":
-		st.subheader("Recommend Courses")
+	elif choice == "Recomendador":
+		st.subheader("Clasificador de copys de redes sociales")
 		cosine_sim_mat = vectorize_text_to_cosine_mat(df['ad_creative_body'])
 		search_term = st.text_input("Search")
 		num_of_rec = st.sidebar.number_input("Numero de resultados",5,30,7)
@@ -152,7 +152,7 @@ def main():
 	else:
 		st.subheader("Sobre esta aplicación")
 		st.text("Esta aplicación cumple con funciones de recomendación de copys de redes sociales")
-		st.text("Eesta aplicación fue creada por Emmanuel López Navarrete")
+		st.text("Esta aplicación fue creada por Emmanuel López Navarrete")
 
 if __name__ == '__main__':
 	main()
