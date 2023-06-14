@@ -105,7 +105,7 @@ def main():
 		
 		choice = st.selectbox("Menu",menu)
 
-	df = load_data("data\sentimientos_Final.csv")
+	df = load_data("data/sentimientos_Final.csv")
 
         
 	if choice == "Home":
